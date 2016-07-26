@@ -1,0 +1,10 @@
+## This first line will likely take a few seconds. Be patient!
+library(ggplot2)
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+NEI_baltimore <- subset(NEI, fips == "24510")
+NEI_tot <- aggregate(Emissions~type+year, data = NEI_baltimore, sum)
+#qplot(x=year, y=Emissions, data = df, colour = type, geom=c("path"))
+ggplot(NEI_tot, aes(x = factor(year), y = Emissions, group = type,color = type)) + geom_line(lwd = 2) + xlab("Year") + ylab("Total Emission from four sources") + ggtitle(expression('Total emission of PM'[2.5]*' from 4 types of sources in Baltimore city by year'))
+dev.copy(png, file = "plot3.png")
+dev.off()
